@@ -55,7 +55,6 @@
     <Compile Include="BLL\ArticulosBLL.cs" />
     <Compile Include="BLL\EntradaArticulosBLL.cs" />
     <Compile Include="BLL\MantenimientoBLL.cs" />
-    <Compile Include="BLL\MantenimientoDetalleBLL.cs" />
     <Compile Include="BLL\TallerBLL.cs" />
     <Compile Include="BLL\VehiculoBLL.cs" />
     <Compile Include="DAL\Contexto.cs" />
