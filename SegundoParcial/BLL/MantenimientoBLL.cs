@@ -42,7 +42,7 @@ namespace SegundoParcial.BLL
                     {
                         contexto.articulos.Find(item.ArticulosId).Inventario -= item.Cantidad;
                     }
-                    contexto.vehiculos.Find(mantenimiento.VehiculoId).MantenimientoTotal += Convert.ToInt32(mantenimiento.Total);
+                    contexto.vehiculos.Find(mantenimiento.VehiculoId).MantenimientoTotal += mantenimiento.Total;
 
                     contexto.SaveChanges();
                     paso = true;
@@ -59,86 +59,95 @@ namespace SegundoParcial.BLL
 
         public static bool Modificar(Mantenimiento mantenimiento)
         {
-
             bool paso = false;
-
             Contexto contexto = new Contexto();
-            var Mantenimiento = BLL.MantenimientoBLL.Buscar(mantenimiento.MantenimientoId);
             try
             {
-                if (Mantenimiento != null)
+                
+                var visitaant = MantenimientoBLL.Buscar(mantenimiento.MantenimientoId);
+
+                foreach (var item in visitaant.Detalle)
                 {
+                    
+                    contexto.articulos.Find(item.ArticulosId).Inventario += item.Cantidad;
 
-
-                    foreach (var item in Mantenimiento.Detalle)
+                    
+                    if (!mantenimiento.Detalle.ToList().Exists(v => v.Id == item.Id))
                     {
-
-                        contexto.articulos.Find(item.ArticulosId).Inventario += item.Cantidad;
-
-
-                        if (!mantenimiento.Detalle.ToList().Exists(v => v.Id == item.Id))
-                        {
-                            contexto.entradas.Find(item.ArticulosId).Cantidad -= item.Cantidad;
-
-                            item.articulos = null;
-                            contexto.Entry(item).State = EntityState.Deleted;
-                        }
+                        
+                        item.articulos = null; 
+                        contexto.Entry(item).State = EntityState.Deleted;
                     }
-
-                    foreach (var item in mantenimiento.Detalle)
-                    {
-                        var estado = item.Id > 0 ? EntityState.Modified : EntityState.Added;
-                        contexto.Entry(item).State = estado;
-                    }
-
-                    contexto.Entry(mantenimiento).State = EntityState.Modified;
-
-                    if (contexto.SaveChanges() > 0)
-                    {
-                        paso = true;
-                    }
-                    contexto.Dispose();
                 }
+
+                
+                foreach (var item in mantenimiento.Detalle)
+                {
+                    
+                    contexto.articulos.Find(item.ArticulosId).Inventario -= item.Cantidad;
+
+                   
+                    var estado = item.Id > 0 ? EntityState.Modified : EntityState.Added;
+                    contexto.Entry(item).State = estado;
+                }
+
+                Mantenimiento EntradaAnterior = BLL.MantenimientoBLL.Buscar(mantenimiento.MantenimientoId);
+
+                
+                decimal diferencia;
+
+                diferencia = mantenimiento.Total - EntradaAnterior.Total;
+
+                Vehiculo vehiculos = BLL.VehiculoBLL.Buscar(mantenimiento.VehiculoId);
+                vehiculos.MantenimientoTotal += diferencia;
+                BLL.VehiculoBLL.Modificar(vehiculos);
+
+
+                contexto.Entry(mantenimiento).State = EntityState.Modified;
+
+                if (contexto.SaveChanges() > 0)
+                {
+                    paso = true;
+                }
+                contexto.Dispose();
             }
             catch (Exception)
             {
                 throw;
             }
             return paso;
-
         }
 
         public static bool Eliminar(int id)
         {
-
             bool paso = false;
 
             Contexto contexto = new Contexto();
-
             try
             {
-
                 Mantenimiento mantenimiento = contexto.mantenimiento.Find(id);
 
-                contexto.mantenimiento.Remove(mantenimiento);
-                if (contexto.SaveChanges() > 0)
+                foreach (var item in mantenimiento.Detalle)
                 {
-
-                    paso = true;
-
+                    var articulo = contexto.articulos.Find(item.ArticulosId);
+                    articulo.Inventario += item.Cantidad;
                 }
 
+                contexto.mantenimiento.Remove(mantenimiento);
+
+                contexto.vehiculos.Find(mantenimiento.VehiculoId).MantenimientoTotal -= mantenimiento.Total;
+
+                if (contexto.SaveChanges() > 0)
+                {
+                    paso = true;
+                }
                 contexto.Dispose();
-
             }
-
             catch (Exception)
             {
 
                 throw;
-
             }
-
             return paso;
         }
 
