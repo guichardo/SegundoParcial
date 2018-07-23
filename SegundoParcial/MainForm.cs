@@ -1,4 +1,5 @@
-﻿using SegundoParcial.UI.Registros;
+﻿using SegundoParcial.UI.Consultas;
+using SegundoParcial.UI.Registros;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -86,6 +87,20 @@ namespace SegundoParcial
             rVehiculos registro = new rVehiculos();
             registro.MdiParent = this;
             registro.Show();
+        }
+
+        private void articulosToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            cArticulos consulta = new cArticulos();
+            consulta.MdiParent = this;
+            consulta.Show();
+        }
+
+        private void vehiculosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            cVehiculos consulta = new cVehiculos();
+            consulta.MdiParent = this;
+            consulta.Show();
         }
     }
 }
