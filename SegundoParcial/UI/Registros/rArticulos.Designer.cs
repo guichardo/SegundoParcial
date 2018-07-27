@@ -172,6 +172,7 @@
             this.GanancianumericUpDown.Name = "GanancianumericUpDown";
             this.GanancianumericUpDown.Size = new System.Drawing.Size(110, 20);
             this.GanancianumericUpDown.TabIndex = 11;
+            this.GanancianumericUpDown.ValueChanged += new System.EventHandler(this.GanancianumericUpDown_ValueChanged);
             // 
             // label4
             // 

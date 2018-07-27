@@ -33,13 +33,11 @@ namespace SegundoParcial.UI.Registros
             return entrada;
         }
 
-        private EntradaArticulos Vaciar()
+        private void Vaciar()
         {
-            EntradaArticulos entrada = new EntradaArticulos();
             IdnumericUpDown.Value = 0;
             CantidadnumericUpDown.Value = 0;
-
-            return entrada;
+         
         }
 
         private void LlenarComboBox()

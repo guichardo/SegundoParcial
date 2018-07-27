@@ -211,13 +211,14 @@ namespace SegundoParcial.UI.Registros
                 mantenimiento.Detalle = (List<MantenimientoDetalle>)MantenimientoDataGridView.DataSource;
             }
 
-
+            
             foreach (var item in BLL.ArticulosBLL.GetList(x => x.Inventario < CantidadNumericUpDown.Value))
             {
 
                 MessageBox.Show("No hay existencia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
-            }
+}
+    
 
             if (string.IsNullOrEmpty(ImporteTextBox.Text))
             {

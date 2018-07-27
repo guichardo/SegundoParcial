@@ -28,6 +28,11 @@ namespace SegundoParcial.BLL
             return subtotal + itbis;
         }
 
+        public static decimal calprecio(decimal precio, decimal ganancia)
+        {
+            return precio * (ganancia / 100);
+        }
+
         public static bool Guardar(Mantenimiento mantenimiento)
         {
             bool paso = false;

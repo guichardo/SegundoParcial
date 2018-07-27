@@ -31,18 +31,15 @@ namespace SegundoParcial.UI.Registros
             return paso;
         }
 
-        private Articulos Vaciar()
+        private void Vaciar()
         {
-            Articulos articulo = new Articulos();
 
-            articulo.ArticuloId = Convert.ToInt32(IdnumericUpDown.Value);
-            articulo.Descripcion = DescripciontextBox.Text;
-            articulo.Costo = Convert.ToInt32(CostonumericUpDown.Value);
-            articulo.Ganancia = Convert.ToInt32(GanancianumericUpDown.Value);
-            articulo.Precio = Convert.ToInt32(PrecionumericUpDown.Value);
-            articulo.Inventario = 0;
-
-            return articulo;
+            IdnumericUpDown.Value = 0;
+            DescripciontextBox.Clear();
+            CostonumericUpDown.Value = 0;
+            GanancianumericUpDown.Value = 0;
+            PrecionumericUpDown.Value = 0;
+            InventarionumericUpDown.Value = 0;
 
         }
 
@@ -134,6 +131,11 @@ namespace SegundoParcial.UI.Registros
                 MessageBox.Show("Eliminado", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
                 MessageBox.Show("No se pudo eliminar", "Fallo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void GanancianumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            PrecionumericUpDown.Value = BLL.MantenimientoBLL.calprecio(CostonumericUpDown.Value, GanancianumericUpDown.Value) + CostonumericUpDown.Value;
         }
     }
 }

@@ -1,1 +1,1 @@
-Create database SegundoParcialDb
+select* from MantenimientoDetalles
